@@ -41,6 +41,11 @@ Linguistics: Human Language Technologies (NAACL 2012).
 ```
 SYSTEM = the system output in sentence-per-line plain text.
 SOURCE_GOLD = the source sentences with gold edits.
+e.g.,
+
+```
+./m2scorer test/conll14.txt test/official-2014.combined.m2
+```
 
 
 ### Pre-requisites
