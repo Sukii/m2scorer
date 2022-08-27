@@ -44,7 +44,7 @@ def load_annotation(gold_file):
     fgold = smart_open(gold_file, 'r')
     puffer = fgold.read()
     fgold.close()
-    puffer = puffer.decode('utf8')
+    #puffer = puffer.decode('utf8')
     for item in paragraphs(puffer.splitlines(True)):
         item = item.splitlines(False)
         sentence = [line[2:].strip() for line in item if line.startswith('S ')]
@@ -74,7 +74,7 @@ def load_annotation(gold_file):
             tok_offset += len(this_sentence.split())
             source_sentences.append(this_sentence)
             this_edits = {}
-            for annotator, annotation in annotations.iteritems():
+            for annotator, annotation in annotations.items():
                 this_edits[annotator] = [edit for edit in annotation if edit[0] <= tok_offset and edit[1] <= tok_offset and edit[0] >= 0 and edit[1] >= 0]
             if len(this_edits) == 0:
                 this_edits[0] = []
@@ -83,16 +83,16 @@ def load_annotation(gold_file):
 
 
 def print_usage():
-    print >> sys.stderr, "Usage: m2scorer.py [OPTIONS] proposed_sentences gold_source"
-    print >> sys.stderr, "where"
-    print >> sys.stderr, "  proposed_sentences   -   system output, sentence per line"
-    print >> sys.stderr, "  source_gold          -   source sentences with gold token edits"
-    print >> sys.stderr, "OPTIONS"
-    print >> sys.stderr, "  -v    --verbose                   -  print verbose output"
-    print >> sys.stderr, "        --very_verbose              -  print lots of verbose output"
-    print >> sys.stderr, "        --max_unchanged_words N     -  Maximum unchanged words when extraction edit. Default 2."
-    print >> sys.stderr, "        --beta B                    -  Beta value for F-measure. Default 0.5."
-    print >> sys.stderr, "        --ignore_whitespace_casing  -  Ignore edits that only affect whitespace and caseing. Default no."
+    print ("Usage: m2scorer.py [OPTIONS] proposed_sentences gold_source", file=sys.stderr)
+    print ("where",file=sys.stderr)
+    print ("  proposed_sentences   -   system output, sentence per line", file=sys.stderr)
+    print ("  source_gold          -   source sentences with gold token edits", file=sys.stderr)
+    print ("OPTIONS", file=sys.stderr)
+    print ("  -v    --verbose                   -  print verbose output", file=sys.stderr)
+    print ("        --very_verbose              -  print lots of verbose output", file=sys.stderr)
+    print ("        --max_unchanged_words N     -  Maximum unchanged words when extraction edit. Default 2.", file=sys.stderr)
+    print ("        --beta B                    -  Beta value for F-measure. Default 0.5.", file=sys.stderr)
+    print ("        --ignore_whitespace_casing  -  Ignore edits that only affect whitespace and caseing. Default no.", file=sys.stderr)
 
 
 
@@ -131,12 +131,15 @@ source_sentences, gold_edits = load_annotation(gold_file)
 
 # load system hypotheses
 fin = smart_open(system_file, 'r')
-system_sentences = [line.decode("utf8").strip() for line in fin.readlines()]
+system_sentences = [line.strip() for line in fin.readlines()]
 fin.close()
 
+#print(len(source_sentences),source_sentences[0])
+#print(len(system_sentences),system_sentences[0])
+#print(len(gold_edits),gold_edits[9])
 p, r, f1 = levenshtein.batch_multi_pre_rec_f1(system_sentences, source_sentences, gold_edits, max_unchanged_words, beta, ignore_whitespace_casing, verbose, very_verbose)
 
-print "Precision   : %.4f" % p
-print "Recall      : %.4f" % r
-print "F_%.1f       : %.4f" % (beta, f1)
+print ("Precision   : %.4f" % p)
+print ("Recall      : %.4f" % r)
+print ("F_%.1f       : %.4f" % (beta, f1))
 
