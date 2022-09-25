@@ -29,7 +29,7 @@ for i in range(0,len(original)):
     i = 0
     for word in diff:
         if word[:1] == "+":
-            print("A", i,i+1, "|||" + type + "|||" + word[1:] + "|||REQUIRED|||-NONE-|||0")
+            print("A", i,i+1, "|||" + type + "|||" + word[2:] + "|||REQUIRED|||-NONE-|||0")
         if word[:1] == " " or word[:1] == "+" :
             i=i+1
     print("")
