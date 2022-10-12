@@ -187,3 +187,10 @@ To convert source files and gold edits from the CoNLL-2014 format into
 the M^2 format, run the preprocessing script bundled with the CoNLL-2014
 training data.
 
+# Creating CONLL diff format from original and edited files
+
+This script can be used to create diff file from original and modified files with one sentence in each line.
+
+```
+./scripts/diff_maker.py test/original.txt test/edited.txt
+```
